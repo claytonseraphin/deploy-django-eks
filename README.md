@@ -24,3 +24,9 @@ Deploy Django app with Minikube
 
 ## Run the `django` app/service with minikube
 `minikube service django`
+
+
+## Create django super user using kubectl
+`kubectl get pods` this should show the name of the pods running
+
+`kubectl exec -it the_django_pod_name_or_id -c app -- python manage.py createsuperuser`
