@@ -6,3 +6,6 @@ Deploy Django app with Minikube
 
 # View the volume claim via command line
 `kubectl get pvc`
+
+# View the running services
+`kubectl get services`
