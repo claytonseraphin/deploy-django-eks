@@ -7,10 +7,10 @@ metadata:
 spec:
   ports:
     - port: 5432
+  clusterIP: None
   selector:
     app: django
     tier: postgres
-    clusterIP: None
 
 ---
 
@@ -60,6 +60,13 @@ spec:
           ports:
             - containerPort: 5432
               name: postgres
+          resources:
+            requests:
+              memory: "64Mi"
+              cpu: "250m"
+            limits:
+              memory: "128Mi"
+              cpu: "500m"
           volumeMounts:
             - name: postgres-data
               mountPath: /var/lib/postgresql/data
