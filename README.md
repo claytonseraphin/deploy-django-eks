@@ -19,14 +19,14 @@ Deploy Django app with Minikube
 ### Build the Nginx Proxy
 `docker buildx build -t django-proxy:latest proxy/`
 
-## Push the django-proxy image to minikube based on the `latest` tag
+### Push the django-proxy image to minikube based on the `latest` tag
 `minikube image load django-proxy:latest`
 
-## Run the `django` app/service with minikube
+### Run the `django` app/service with minikube
 `minikube service django`
 
 
-## Create django super user using kubectl
+### Create django super user using kubectl
 `kubectl get pods` this should show the name of the pods running
 
 `kubectl exec -it the_django_pod_name_or_id -c app -- python manage.py createsuperuser`
