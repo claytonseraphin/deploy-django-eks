@@ -9,3 +9,18 @@ Deploy Django app with Minikube
 
 ### View the running services
 `kubectl get services`
+
+### Build the django app container
+`docker buildx build -t django-app:latest .`
+
+## Push the django-app image to minikube based on the `latest` tag
+`minikube image load django-app:latest`
+
+### Build the Nginx Proxy
+`docker buildx build -t django-proxy:latest proxy/`
+
+## Push the django-proxy image to minikube based on the `latest` tag
+`minikube image load django-proxy:latest`
+
+## Run the `django` app/service with minikube
+`minikube service django`
