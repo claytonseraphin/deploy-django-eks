@@ -30,3 +30,8 @@ Deploy Django app with Minikube
 `kubectl get pods` this should show the name of the pods running
 
 `kubectl exec -it the_django_pod_name_or_id -c app -- python manage.py createsuperuser`
+
+## Terraform Deployment for EKS
+
+## Pushing updates to aws via Terraform
+`aws-vault exec <profile-name> -- terraform apply`
