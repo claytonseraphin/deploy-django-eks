@@ -7,3 +7,13 @@ output "region" {
   description = "AWS region"
   value       = var.region
 }
+
+output "ecr_app_url" {
+  description = "URL of ECR repository for app"
+  value       = aws_ecr_repository.app.repository_url
+}
+
+output "ecr_proxy_url" {
+  description = "URL of ECR repository for proxy"
+  value       = aws_ecr_repository.proxy.repository_url
+}
