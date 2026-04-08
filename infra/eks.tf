@@ -28,6 +28,10 @@ module "eks" {
     coredns = {
       most_recent = true
     }
+    aws-efs-csi-driver = {
+      most_recent              = true
+      service_account_role_arn = module.efs_csi_irsa_role.iam_role_arn
+    }
   }
 
   iam_role_additional_policies = {
