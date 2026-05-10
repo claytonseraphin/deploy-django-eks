@@ -48,7 +48,7 @@ jobs:
 
           docker tag $IMAGE_BASE:$SHA_TAG $IMAGE_BASE:latest
 
-      - name: RUn Trivy vulnerabiliuty scanner
+      - name: Run Trivy vulnerabiliuty scanner
         uses: aquasecurity/trivy-actions@master
         with:
           image-ref: "${{ env.IMAGE_BASE }}:${{ env.SHA_TAG }}"
@@ -58,7 +58,7 @@ jobs:
 
       - name: Push image to ECR
         run: |
-          docker push ${{ env.IMAGE_BASE }}: ${{ env.SHA_TAG }}
+          docker push $IMAGE_BASE:$SHA_TAG
 
       - name: CI Complete
         run: |
