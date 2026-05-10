@@ -1,0 +1,66 @@
+name: Build and Push Django Project to ECR
+
+on:
+  push:
+    branches: ["Staging"]
+
+permissions:
+  id-token: write # Needed for OIDC
+  contents: write # Needed to push commits
+
+env:
+  AWS_REGION: us-east1
+  ECR_REPOSITORY: pipeline/test
+
+jobs:
+  build-and-push-DP:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Configure AWS credentials via OIDC
+        uses: aws-actions/configure-aws-credentials@v4
+        with:
+          role-to-assume: arn:aws:iam::977099002548:role/github-actions-oidc-role-test-pipeline
+          aws-region: ${{ env.AWS_REGION }}
+
+      - name: Login to Amazon ECR # this step logs Github actions runner into ECR so Docker commands can push or pull container images.
+        id: login-ecr # id gives that workflow step a reference name so other steps can access its outputs.
+        uses: aws-actions/amazon-ecr-login@v2
+
+      - name: Define image tags
+        id: vars
+        run: |
+          SHA_TAG=sha-${GITHUB_SHA::7}
+          IMAGE_BASE="${{ steps.login-ecr.outputs.registry }}/${{ env.ECR_REPOSITORY }}"
+          echo "IMAGE_BASE=$IMAGE_BASE" >> $GITHUB_ENV
+          echo "SHA_TAG=$SHA_TAG" >> $GITHUB_ENV
+          echo "Using tags: latest and $SHA_TAG"
+          echo "latest = convenience tag for testing"
+          echo "$SHA_TAG = immutable tag used in Heml values"
+
+      - name: Build Docker image
+        run: |
+          echo "Building image $IMAGE_BASE:$SHA_TAG"
+          docker build -t $IMAGE_BASE:$SHA_TAG .
+
+          docker tag $IMAGE_BASE:$SHA_TAG $IMAGE_BASE:latest
+
+      - name: Run Trivy vulnerabiliuty scanner
+        uses: aquasecurity/trivy-action@master
+        with:
+          image-ref: "${{ env.IMAGE_BASE }}:${{ env.SHA_TAG }}"
+          format: table
+          exit-code: '1'
+          severity: 'CRITICAL,HIGH'
+
+      - name: Push image to ECR
+        run: |
+          docker push $IMAGE_BASE:$SHA_TAG
+
+      - name: CI Complete
+        run: |
+          echo "Image pushed and Git update done"
+          echo "Tags used: $TAGS"
