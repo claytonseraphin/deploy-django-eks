@@ -42,6 +42,20 @@ Deploy Django app with Minikube
 ### To see the nodes running in your EKS cluster from your terminal after authenticating:
 `kubectl get nodes`
 
+If a similar error gets returned:
+`E0407 22:08:33.108938    5474 memcache.go:265] "Unhandled Error" err="couldn't get current server API group list: the server has asked for the client to provide credentials"`
+
+Do the following:
+`AWS Console
+→ EKS
+→ Clusters
+→ my-k8s-cluster
+→ Access tab
+→ IAM access entries
+→ Create access entry
+→ Add your xyz ARN
+→ Policy: AmazonEKSClusterAdminPolicy`
+
 ### Apply recommended dashboard configuration
 `kubectl apply -f https://raw.githubusercontent.com/kubernetes/dashboard/v2.7.0/aio/deploy/recommended.yaml`
 
@@ -61,6 +75,7 @@ NOTE: The dashboard is accessible via this URL once the proxy is running:
 
 ### Apply kubernetes config (requires a kustomization.yaml file in the root of the target directory):
 `kubectl apply -k ./path/to/config`
+`kubectl apply -k deploy/` in our case to apply cahnges on all ayml file in deploy/
 
 ### Execute a command on a running pod (for example, to get shell or create a superuser account with Django)
 `kubectl exec -it <POD NAME> sh`
@@ -77,4 +92,9 @@ NOTE: The dashboard is accessible via this URL once the proxy is running:
 
 ## Build proxy image to push to ecr
 `docker build -t ecr-proxy-url:latest --compress .`
-``docker push ecr-proxy-url:latest``
+`docker push ecr-proxy-url:latest`
+
+## Apply EKS changes to deploy/ yaml config
+After changing the docker images in deploy/django.yaml to the ecr url and update
+the other config, run the following:
+`kubectl apply -k deploy/`

@@ -22,10 +22,11 @@ metadata:
     app: django
 spec:
   accessModes:
-    - ReadWriteOnce
+    - ReadWriteMany
+  storageClassName: efs-sc
   resources:
     requests:
-      storage: 10Gi
+      storage: 5Gi
 
 ---
 
@@ -53,8 +54,8 @@ spec:
           persistentVolumeClaim:
             claimName: django-app-pvc
       containers:
-        - image: django-app:latest
-          imagePullPolicy: Never # Avoid the image to be pulled from dockerhub since it was pushed to Minikube
+        - image: 977099002548.dkr.ecr.us-east-1.amazonaws.com/django-k8s-app:latest
+          #imagePullPolicy: Never # Avoid the image to be pulled from dockerhub since it was pushed to Minikube
           resources:
             requests:
               memory: "128Mi"
@@ -71,9 +72,11 @@ spec:
               mountPath: /vol/web
           env:
             - name: DB_HOST
-              value: django-postgres
+              #value: django-postgres
+              value: django-k8s-db.cels4u640btp.us-east-1.rds.amazonaws.com
             - name: DB_NAME
-              value: djangodb
+              #value: djangodb
+              value: djangoproject
             - name: DB_USER
               value: djangouser
             - name: ALLOWED_HOSTS
@@ -89,8 +92,9 @@ spec:
                   name: django
                   key: secret
 
-        - image: django-proxy:latest
-          imagePullPolicy: Never
+        #- image: django-proxy:latest
+        - image: 977099002548.dkr.ecr.us-east-1.amazonaws.com/django-k8s-proxy:latest
+          #imagePullPolicy: Never
           name: proxy
           ports:
             - containerPort: 8000
