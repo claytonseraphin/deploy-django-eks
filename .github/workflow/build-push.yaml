@@ -1,7 +1,7 @@
 name: Build and Push Django Project to ECR
 
 on:
-  Push:
+  push:
     branches: ["Staging"]
 
 permissions:
