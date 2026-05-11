@@ -101,4 +101,4 @@ push:
         docker push $IMAGE_BASE:latest
       fi
     - echo "CI Complete - Image pushed successfully"
-    - echo "SHA Tag: $SHA_TAG"
+    - 'echo "SHA Tag: $SHA_TAG"'
