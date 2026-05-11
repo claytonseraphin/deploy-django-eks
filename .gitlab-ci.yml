@@ -19,6 +19,7 @@ default:
     - |
       echo "Installing dependencies"
       apk add --no-cache aws-cli
+      echo "AWS CLI installed successfully"
 
     - |
       # Assume role via OIDC
