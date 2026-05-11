@@ -16,7 +16,11 @@ default:
   before_script:
     - |
       echo "Installing dependencies"
-      apk add update && apk add aws-cli
+      apk add --no-cache curl unzip gcompat
+      curl -s "https://awscli.amazonaws.com/awscli-exe-linux-x86_64-2.17.0.zip" -o "awscliv2.zip"
+      unzip -q awscliv2.zip
+      ./aws/install
+      echo "AWS CLI installed successfully"
 
     - |
       # Assume role via OIDC
