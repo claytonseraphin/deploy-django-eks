@@ -13,11 +13,18 @@ default:
     AWS_OIDC_TOKEN:
       aud: https://gitlab.com
 
+  image: ubuntu:22.04
+
 before_script:
   - |
-    echo "Installing AWS CLI via pip"
-    apk add --no-cache python3 py3-pip groff less
-    pip3 install awscli --break-system-packages
+    echo "Installing dependencies"
+    apt-get update -y -qq
+    apt-get install -y curl unzip
+
+    echo "Installing AWS CLI v2"
+    curl "https://awscli.amazonaws.com/awscli-exe-linux-x86_64.zip" -o "awscliv2.zip"
+    unzip -q awscliv2.zip
+    ./aws/install
     aws --version
 
   - |
