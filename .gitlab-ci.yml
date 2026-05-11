@@ -9,6 +9,7 @@ variables:
   SHA_TAG: sha-${CI_COMMIT_SHORT_SHA}
   DOCKER_HOST: tcp://docker:2375
   DOCKER_TLS_CERTDIR: ""
+  AWS_REGION: us-east-1
 
 default:
   id_tokens:
