@@ -15,6 +15,8 @@ default:
 
 before_script:
   - |
+    echo "Installing aws-cli"
+    apk add --no-cache aws-cli
     # Assume role via OIDC
     export $(aws sts assume-role-with-web-identity \
       --role-arn arn:aws:iam::$AWS_OIDC_IAM_ROLE \
