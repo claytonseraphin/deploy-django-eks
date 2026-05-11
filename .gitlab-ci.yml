@@ -51,11 +51,11 @@ build:
     - |
       # save image to tar so it can be passed in the scan stage
       docker save $IMAGE_BASE:$SHA_TAG -o image.tar
-  - artifacts:
-      paths:
-        - image.tar
-        - build.env
-      expire_in: 1 hour
+  artifacts:
+    paths:
+      - image.tar
+      - build.env
+    expire_in: 1 hour
 
 
 scan:
