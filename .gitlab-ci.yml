@@ -41,7 +41,8 @@ build:
   image: docker:24
   services:
     - docker:24-dind
-  rules: if: "$CI_MERGE_REQUEST_TARGET_BRANCH_NAME =~ /ˆ(main|Staging)$/ || $CI_COMMIT_BRANCH =~ /ˆ(main|Staging)$/"
+  rules:
+    - if: "$CI_MERGE_REQUEST_TARGET_BRANCH_NAME =~ /ˆ(main|Staging)$/ || $CI_COMMIT_BRANCH =~ /ˆ(main|Staging)$/"
   script:
     - source build.env
     - echo "Building $IMAGE_BASE:$SHA_TAG"
@@ -60,7 +61,8 @@ build:
 scan:
   stage: scan
   image: aquasec/trivy:latest
-  rules: if: "$CI_MERGE_REQUEST_TARGET_BRANCH_NAME =~ /ˆ(main|Staging)$/ || $CI_COMMIT_BRANCH =~ /ˆ(main|Staging)$/"
+  rules:
+    - if: "$CI_MERGE_REQUEST_TARGET_BRANCH_NAME =~ /ˆ(main|Staging)$/ || $CI_COMMIT_BRANCH =~ /ˆ(main|Staging)$/"
   dependencies:
     - build
   script:
@@ -84,7 +86,8 @@ push:
   image: docker:24
   services:
     - docker:24-dind
-  rules: if: "$CI_MERGE_REQUEST_TARGET_BRANCH_NAME =~ /ˆ(main|Staging)$/ || $CI_COMMIT_BRANCH =~ /ˆ(main|Staging)$/"
+  rules:
+    - if: "$CI_MERGE_REQUEST_TARGET_BRANCH_NAME =~ /ˆ(main|Staging)$/ || $CI_COMMIT_BRANCH =~ /ˆ(main|Staging)$/"
   dependencies:
     - build
   script:
