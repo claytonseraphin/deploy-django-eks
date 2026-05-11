@@ -79,7 +79,9 @@ build:
 
 scan:
   stage: scan
-  image: aquasec/trivy:latest
+  image:
+    name: aquasec/trivy:latest
+    entrypoint: [""]
   rules:
     - if: "$CI_MERGE_REQUEST_TARGET_BRANCH_NAME =~ /^(main|Staging)$/ || $CI_COMMIT_BRANCH =~ /^(main|Staging)$/"
   dependencies:
