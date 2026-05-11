@@ -51,7 +51,7 @@ build:
     - |
       # save image to tar so it can be passed in the scan stage
       docker save $IMAGE_BASE:$SHA_TAG -o image.tar
-    - artifacts:
+  - artifacts:
       paths:
         - image.tar
         - build.env
@@ -100,5 +100,5 @@ push:
         echo "Pushing $IMAGE_BASE:latest"
         docker push $IMAGE_BASE:latest
       fi
-    - echo "CI COmplete - Image puahsed successfully"
-    - echo "SHA TAG: $SHA_TAG"
+    - echo "CI Complete - Image puahsed successfully"
+    - echo "SHA Tag: $SHA_TAG"
