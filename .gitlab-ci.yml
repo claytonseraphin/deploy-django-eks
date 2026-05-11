@@ -43,7 +43,7 @@ build:
     - docker:24-dind
   rules: if: "$CI_MERGE_REQUEST_TARGET_BRANCH_NAME =~ /ˆ(main|Staging)$/ || $CI_COMMIT_BRANCH =~ /ˆ(main|Staging)$/"
   script:
-    - source: build.env
+    - source build.env
     - echo "Building $IMAGE_BASE:$SHA_TAG"
     - docker build -t $IMAGE_BASE:$SHA_TAG .
     - docker tag $IMAGE_BASE:$SHA_TAG $IMAGE_BASE:latest
@@ -64,7 +64,7 @@ scan:
   dependencies:
     - build
   script:
-    - source: build.env
+    - source build.env
     - echo "Scanning $IMAGE_BASE:$SHA_TAG"
     - |
       trivy image \
@@ -98,4 +98,4 @@ push:
         docker push $IMAGE_BASE:latest
       fi
     - echo "CI COmplete - Image puahsed successfully"
-    - echo "SHA TAG: $SHA_TAG" 
+    - echo "SHA TAG: $SHA_TAG"
